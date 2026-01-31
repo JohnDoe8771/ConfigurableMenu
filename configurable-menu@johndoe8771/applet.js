@@ -2513,6 +2513,8 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         }
         if (!this.verticalSystem && !this.symbolicSystemIcons) {
             this.systemBox.set_style("spacing: 2px")
+        } else {
+            this.systemBox.set_style("spacing: 10px")
         }
     }
 
