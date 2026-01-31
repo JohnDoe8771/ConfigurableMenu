@@ -30,8 +30,9 @@
         "appearance-menu" : {
             "type" : "section",
             "title" : "Options",
-            "keys" : ["search-position", "system-position", "vertical-system-buttons", "show-description", "show-sidebar-names","symbolic-category-icons", 
-                      "category-icon-size", "application-icon-size", "sidebar-icon-size", "sidebar-max-width", "reset-menu-size-button"]
+            "keys" : ["search-position", "system-position", "vertical-system-buttons", "system-icon-size", "show-description", "show-sidebar-names",
+                      "symbolic-category-icons", "category-icon-size", "application-icon-size", "sidebar-icon-size", "symbolic-system-icons", 
+                      "sidebar-max-width", "reset-menu-size-button"]
         },
         "appearance-panel" : {
             "type" : "section",
@@ -86,6 +87,11 @@
     "type" : "switch",
     "default" : true,
     "description" : "Use symbolic icons for categories"
+ },
+ "symbolic-system-icons" : {
+    "type" : "switch",
+    "default" : false,
+    "description" : "Use symbolic icons for system buttons"
  },
  "category-icon-size" : {
     "type": "spinbutton",
@@ -166,8 +172,17 @@
   },
   "vertical-system-buttons" : {
    "type" : "switch",
-   "default" : true,
+   "default" : false,
    "description": "Vertical system buttons in sidebar"
+ },
+ "system-icon-size" : {
+    "type": "spinbutton",
+    "default" : 16,
+    "min" : 8,
+    "max" : 48,
+    "step" : 1,
+    "units" : "px",
+    "description" : "System icon size"
  },
   "search-position" : {
       "type": "combobox",
@@ -208,7 +223,7 @@
  },
  "show-sidebar-names" : {
    "type" : "switch",
-   "default" : false,
+   "default" : true,
    "description": "Show the names of items in the sidebar"
  },
 "show-description" : {

@@ -923,14 +923,14 @@ class FavoritesButton extends GenericApplicationButton {
 }
 
 class SystemButton extends SimpleMenuItem {
-    constructor(applet, iconName, name, desc) {
+    constructor(applet, iconName, name, desc, symbolic) {
         super(applet, {
             name: name,
             description: desc,
             type: 'system',
             styleClass: 'appmenu-system-button',
         });
-        this.addIcon(16, iconName, null, true);
+        this.addIcon(applet.systemSize - (symbolic ? 16 : 0), iconName, null, symbolic);
         this.actor.set_accessible_name(name);
         this.actor.set_accessible_role(Atk.Role.BUTTON);
     }
@@ -1182,14 +1182,16 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         this.settings.bind("menu-label", "menuLabel", this._updateIconAndLabel);
         this.settings.bind("overlay-key", "overlayKey", this._updateKeybinding);
         this.settings.bind("symbolic-category-icons", "symbolicCategoryIcons", () => this.queueRefresh(REFRESH_ALL_MASK));
+        this.settings.bind("symbolic-system-icons", "symbolicSystemIcons", () => this.queueRefresh(REFRESH_ALL_MASK));
         this.settings.bind("category-icon-size", "categoryIconSize", () => this.queueRefresh(REFRESH_ALL_MASK));
         this.settings.bind("category-hover", "categoryHover", this._updateCategoryHover);
         this.settings.bind("application-icon-size", "applicationIconSize", () => this.queueRefresh(REFRESH_ALL_MASK));
         this.settings.bind("search-position", "searchPosition", () => this._layout());
         this.settings.bind("system-position", "systemPosition", () => this._layout());
-        this.settings.bind("vertical-system-buttons", "verticalSystem", () => this._layout());
         this.settings.bind("show-description", "showDescription", () => this.queueRefresh(REFRESH_ALL_MASK));
-        this.settings.bind("show-sidebar-names", "showSidebarNames", () => {this.queueRefresh(REFRESH_ALL_MASK)});
+        this.settings.bind("vertical-system-buttons", "verticalSystem", () => this._layout());
+        this.settings.bind("system-icon-size", "systemSize", () => this.queueRefresh(REFRESH_ALL_MASK));
+        this.settings.bind("show-sidebar-names", "showSidebarNames", () => this.queueRefresh(REFRESH_ALL_MASK));
         this.settings.bind("show-sidebar", "showSidebar", this._sidebarToggle);
         this.settings.bind("sidebar-max-width", "sidebarMaxWidth", this._sidebarToggle);
         this.settings.bind("show-avatar", "showAvatar", this._avatarToggle);
@@ -2390,10 +2392,14 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         let button;
 
         //Lock screen
-        button = new SystemButton(this, "xsi-lock-screen",
+        button = new SystemButton(this, (this.symbolicSystemIcons ? "xsi" : "system") + "-lock-screen",
                                   _("Lock Screen"),
-                                  _("Lock the screen"));
-        button.actor.add_style_class_name("appmenu-system-button-lock");
+                                  _("Lock the screen"),
+                                  this.symbolicSystemIcons);
+        if (!this.symbolicSystemIcons)
+            button.actor.set_style_class_name('appmenu-sidebar-button');
+        else
+            button.actor.add_style_class_name("appmenu-system-button-lock");
 
         button.activate = () => {
             this.menu.close();
@@ -2416,10 +2422,14 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         this.systemBox.add(button.actor, { y_align: St.Align.MIDDLE, y_fill: false });
 
         //Logout button
-        button = new SystemButton(this, "xsi-log-out",
+        button = new SystemButton(this, (this.symbolicSystemIcons ? "xsi" : "system") + "-log-out",
                                   _("Log Out"),
-                                  _("Leave the session"));
-        button.actor.add_style_class_name("appmenu-system-button-logout");
+                                  _("Leave the session"),
+                                  this.symbolicSystemIcons);
+        if (!this.symbolicSystemIcons)
+            button.actor.set_style_class_name('appmenu-sidebar-button');
+        else
+            button.actor.add_style_class_name("appmenu-system-button-logout");
 
         button.activate = () => {
             this.menu.close();
@@ -2429,10 +2439,14 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         this.systemBox.add(button.actor, { y_align: St.Align.MIDDLE, y_fill: false });
 
         //Shutdown button
-        button = new SystemButton(this, "xsi-shutdown",
+        button = new SystemButton(this, (this.symbolicSystemIcons ? "xsi" : "system") + "-shutdown",
                                   _("Shut Down"),
-                                  _("Shut down the computer"));
-        button.actor.add_style_class_name("appmenu-system-button-shutdown");
+                                  _("Shut down the computer"),
+                                  this.symbolicSystemIcons);
+        if (!this.symbolicSystemIcons)
+            button.actor.set_style_class_name('appmenu-sidebar-button');
+        else
+            button.actor.add_style_class_name("appmenu-system-button-lock");
 
         button.activate = () => {
             this.menu.close();
