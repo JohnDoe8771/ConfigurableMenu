@@ -85,7 +85,7 @@
  },
  "symbolic-category-icons" : {
     "type" : "switch",
-    "default" : true,
+    "default" : false,
     "description" : "Use symbolic icons for categories"
  },
  "symbolic-system-icons" : {
@@ -95,7 +95,7 @@
  },
  "category-icon-size" : {
     "type": "spinbutton",
-    "default" : 16,
+    "default" : 22,
     "min" : 8,
     "max" : 48,
     "step" : 1,
@@ -104,7 +104,7 @@
  },
  "application-icon-size" : {
     "type": "spinbutton",
-    "default" : 32,
+    "default" : 22,
     "min" : 8,
     "max" : 48,
     "step" : 1,
@@ -128,7 +128,7 @@
  },
 "show-desktop" : {
     "type" : "switch",
-    "default" : true,
+    "default" : false,
     "description" : "Desktop"
  },
 "show-documents" : {
@@ -138,7 +138,7 @@
  },
 "show-downloads" : {
     "type" : "switch",
-    "default" : true,
+    "default" : false,
     "description" : "Downloads"
  },
  "show-music" : {
@@ -172,13 +172,13 @@
   },
   "vertical-system-buttons" : {
    "type" : "switch",
-   "default" : false,
+   "default" : true,
    "description": "Vertical system buttons in sidebar"
  },
  "system-icon-size" : {
     "type": "spinbutton",
-    "default" : 16,
-    "min" : 8,
+    "default" : 32,
+    "min" : 16,
     "max" : 48,
     "step" : 1,
     "units" : "px",
@@ -186,7 +186,7 @@
  },
   "search-position" : {
       "type": "combobox",
-      "default" : "bottom",
+      "default" : "top",
       "description" : "Position of the search bar",
       "options" : {
           "At the top" : "top",
@@ -195,7 +195,7 @@
   },
  "sidebar-icon-size" : {
     "type": "spinbutton",
-    "default" : 24,
+    "default" : 32,
     "min" : 8,
     "max" : 48,
     "step" : 1,
@@ -223,12 +223,12 @@
  },
  "show-sidebar-names" : {
    "type" : "switch",
-   "default" : true,
+   "default" : false,
    "description": "Show the names of items in the sidebar"
  },
 "show-description" : {
    "type" : "switch",
-   "default" : true,
+   "default" : false,
    "description": "Show application descriptions"
  },
  "category-hover" : {
@@ -272,11 +272,11 @@
  },
  "popup-width" : {
     "type" : "generic",
-    "default" : 665
+    "default" : 550
  },
  "popup-height" : {
     "type" : "generic",
-    "default" : 425
+    "default" : 515
  },
  "reset-menu-size-button" : {
     "type" : "button",
