@@ -1,6 +1,6 @@
 # Configurable Menu for Cinnamon 6.6+
 
-<img width="1851" height="598" alt="AllMenus" src="https://github.com/user-attachments/assets/a809814f-5f38-491a-b0fb-a157238b85e5" />
+<img width="1851" height="598" alt="AllMenus" src="https://github.com/user-attachments/assets/3197707d-011b-46b9-a825-1f865bca8804" />
 
 # Description
 
