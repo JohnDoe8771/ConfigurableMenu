@@ -930,7 +930,8 @@ class SystemButton extends SimpleMenuItem {
             type: 'system',
             styleClass: 'appmenu-system-button',
         });
-        this.addIcon(applet.systemSize - (symbolic ? 16 : 0), iconName, null, symbolic);
+        // TODO: Make less janky
+        this.addIcon((applet.systemSize - (symbolic ? 16 : 0)) > 1 ? (applet.systemSize - (symbolic ? 16 : 0)) : 1, iconName, null, symbolic);
         this.actor.set_accessible_name(name);
         this.actor.set_accessible_role(Atk.Role.BUTTON);
     }
@@ -2396,9 +2397,10 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
                                   _("Lock Screen"),
                                   _("Lock the screen"),
                                   this.symbolicSystemIcons);
-        if (!this.symbolicSystemIcons)
+        if (!this.symbolicSystemIcons) {
             button.actor.set_style_class_name('appmenu-sidebar-button');
-        else
+            button.actor.set_style("margin: 0 0px;");
+        } else
             button.actor.add_style_class_name("appmenu-system-button-lock");
 
         button.activate = () => {
@@ -2426,9 +2428,10 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
                                   _("Log Out"),
                                   _("Leave the session"),
                                   this.symbolicSystemIcons);
-        if (!this.symbolicSystemIcons)
+        if (!this.symbolicSystemIcons) {
             button.actor.set_style_class_name('appmenu-sidebar-button');
-        else
+            button.actor.set_style("margin: 0 0px;");
+        } else
             button.actor.add_style_class_name("appmenu-system-button-logout");
 
         button.activate = () => {
@@ -2443,10 +2446,11 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
                                   _("Shut Down"),
                                   _("Shut down the computer"),
                                   this.symbolicSystemIcons);
-        if (!this.symbolicSystemIcons)
+        if (!this.symbolicSystemIcons) {
             button.actor.set_style_class_name('appmenu-sidebar-button');
-        else
-            button.actor.add_style_class_name("appmenu-system-button-lock");
+            button.actor.set_style("margin: 0 0px;");
+        } else
+            button.actor.add_style_class_name("appmenu-system-button-shutdown");
 
         button.activate = () => {
             this.menu.close();
@@ -2502,10 +2506,13 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         // Position the system box
         if (this.systemPosition == "sidebar") {
             global.reparentActor(this.systemBox, this.sidebar);
-            this.systemBox.vertical = this.verticalSystem;
+            this.systemBox.vertical = this.verticalSystem; 
         } else {
             global.reparentActor(this.systemBox, this.searchBox);
             this.systemBox.vertical = false;
+        }
+        if (!this.verticalSystem && !this.symbolicSystemIcons) {
+            this.systemBox.set_style("spacing: 2px")
         }
     }
 

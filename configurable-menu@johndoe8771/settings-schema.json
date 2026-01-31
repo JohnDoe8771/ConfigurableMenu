@@ -30,9 +30,9 @@
         "appearance-menu" : {
             "type" : "section",
             "title" : "Options",
-            "keys" : ["search-position", "system-position", "vertical-system-buttons", "system-icon-size", "show-description", "show-sidebar-names",
-                      "symbolic-category-icons", "category-icon-size", "application-icon-size", "sidebar-icon-size", "symbolic-system-icons", 
-                      "sidebar-max-width", "reset-menu-size-button"]
+            "keys" : ["search-position", "system-position", "vertical-system-buttons", "show-description", "show-sidebar-names",
+                      "symbolic-category-icons", "symbolic-system-icons", "category-icon-size", "application-icon-size", "sidebar-icon-size",  
+                      "system-icon-size", "sidebar-max-width", "reset-menu-size-button"]
         },
         "appearance-panel" : {
             "type" : "section",
@@ -85,17 +85,17 @@
  },
  "symbolic-category-icons" : {
     "type" : "switch",
-    "default" : false,
+    "default" : true,
     "description" : "Use symbolic icons for categories"
  },
  "symbolic-system-icons" : {
     "type" : "switch",
-    "default" : false,
+    "default" : true,
     "description" : "Use symbolic icons for system buttons"
  },
  "category-icon-size" : {
     "type": "spinbutton",
-    "default" : 22,
+    "default" : 16,
     "min" : 8,
     "max" : 48,
     "step" : 1,
@@ -104,7 +104,7 @@
  },
  "application-icon-size" : {
     "type": "spinbutton",
-    "default" : 22,
+    "default" : 30,
     "min" : 8,
     "max" : 48,
     "step" : 1,
@@ -178,8 +178,8 @@
  "system-icon-size" : {
     "type": "spinbutton",
     "default" : 32,
-    "min" : 16,
-    "max" : 48,
+    "min" : 8,
+    "max" : 64,
     "step" : 1,
     "units" : "px",
     "description" : "System icon size"
@@ -206,7 +206,7 @@
  "sidebar-max-width": {
   "type": "spinbutton",
   "default": 180,
-  "min": 130,
+  "min": 80,
   "max": 600,
   "step": 1,
   "description": "Maximum sidebar width (px)"
@@ -228,7 +228,7 @@
  },
 "show-description" : {
    "type" : "switch",
-   "default" : false,
+   "default" : true,
    "description": "Show application descriptions"
  },
  "category-hover" : {
@@ -276,7 +276,7 @@
  },
  "popup-height" : {
     "type" : "generic",
-    "default" : 515
+    "default" : 535
  },
  "reset-menu-size-button" : {
     "type" : "button",
