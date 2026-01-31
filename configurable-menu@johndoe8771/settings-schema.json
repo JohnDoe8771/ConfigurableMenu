@@ -30,9 +30,8 @@
         "appearance-menu" : {
             "type" : "section",
             "title" : "Options",
-            "keys" : ["search-position", "system-position", "show-description", "symbolic-category-icons", "category-icon-size",
-                      "application-icon-size", "sidebar-icon-size", "sidebar-max-width",
-                      "reset-menu-size-button"]
+            "keys" : ["search-position", "system-position", "vertical-system-buttons", "show-description", "show-sidebar-names","symbolic-category-icons", 
+                      "category-icon-size", "application-icon-size", "sidebar-icon-size", "sidebar-max-width", "reset-menu-size-button"]
         },
         "appearance-panel" : {
             "type" : "section",
@@ -165,6 +164,11 @@
           "Alongside the search bar" : "search"
       }
   },
+  "vertical-system-buttons" : {
+   "type" : "switch",
+   "default" : true,
+   "description": "Vertical system buttons in sidebar"
+ },
   "search-position" : {
       "type": "combobox",
       "default" : "bottom",
@@ -201,6 +205,11 @@
    "type" : "switch",
    "default" : true,
    "description": "Recents"
+ },
+ "show-sidebar-names" : {
+   "type" : "switch",
+   "default" : false,
+   "description": "Show the names of items in the sidebar"
  },
 "show-description" : {
    "type" : "switch",

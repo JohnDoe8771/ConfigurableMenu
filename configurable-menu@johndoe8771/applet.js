@@ -44,14 +44,15 @@ const POPUP_MIN_HEIGHT = 400;
 const POPUP_MAX_HEIGHT = 1400;
 
 const RefreshFlags = Object.freeze({
-    APP:      0b000001,
-    FAV_APP:  0b000010,
-    FAV_DOC:  0b000100,
-    PLACE:    0b001000,
-    RECENT:   0b010000,
-    SYSTEM:   0b100000
+    APP:      0b0000001,
+    FAV_APP:  0b0000010,
+    FAV_DOC:  0b0000100,
+    PLACE:    0b0001000,
+    RECENT:   0b0010000,
+    SYSTEM:   0b0100000,
+    AVATAR:   0b1000000
 });
-const REFRESH_ALL_MASK = 0b111111;
+const REFRESH_ALL_MASK = 0b1111111;
 
 const NO_MATCH = 99999;
 const MATCH_ADDERS = [
@@ -736,7 +737,9 @@ class PlaceButton extends SimpleMenuItem {
         else
             this.addIcon(applet.applicationIconSize, 'folder');
 
-        this.addLabel(this.name, 'appmenu-application-button-label');
+         if (applet.showSidebarNames) {
+            this.addLabel(this.name, 'appmenu-application-button-label');
+         }
     }
 
     activate() {
@@ -886,7 +889,9 @@ class FavoritesButton extends GenericApplicationButton {
         super(applet, app, 'fav', false, 'appmenu-sidebar-button');
         this.set_application_icon(applet.sidebarIconSize);
         this.addActor(this.icon);
-        this.addLabel(this.name, 'appmenu-application-button-label');
+        if (applet.showSidebarNames) {
+            this.addLabel(this.name, 'appmenu-application-button-label');
+        }
 
         this._draggable = DND.makeDraggable(this.actor);
         this._signals.connect(this._draggable, 'drag-end', this._onDragEnd.bind(this));
@@ -968,10 +973,11 @@ class SidebarScrollBox {
 }
 
 class FavoriteAppsBox {
-    constructor() {
+    constructor(showNames) {
         this.actor = new St.BoxLayout({
             vertical: true,
             y_expand: true,
+            x_align: showNames ? Clutter.ActorAlign.START : Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.START,
             style_class: 'appmenu-favs-box'
         });
@@ -1181,7 +1187,9 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         this.settings.bind("application-icon-size", "applicationIconSize", () => this.queueRefresh(REFRESH_ALL_MASK));
         this.settings.bind("search-position", "searchPosition", () => this._layout());
         this.settings.bind("system-position", "systemPosition", () => this._layout());
+        this.settings.bind("vertical-system-buttons", "verticalSystem", () => this._layout());
         this.settings.bind("show-description", "showDescription", () => this.queueRefresh(REFRESH_ALL_MASK));
+        this.settings.bind("show-sidebar-names", "showSidebarNames", () => {this.queueRefresh(REFRESH_ALL_MASK)});
         this.settings.bind("show-sidebar", "showSidebar", this._sidebarToggle);
         this.settings.bind("sidebar-max-width", "sidebarMaxWidth", this._sidebarToggle);
         this.settings.bind("show-avatar", "showAvatar", this._avatarToggle);
@@ -1323,6 +1331,8 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
             this._refreshSidebar();
         if ((m & RefreshFlags.RECENT) === RefreshFlags.RECENT)
             this._refreshRecent();
+        if ((m & RefreshFlags.AVATAR) === RefreshFlags.AVATAR)
+            this._avatarToggle(); // TODO: Make an actual refresher
 
         this.refreshMask = 0;
 
@@ -1483,6 +1493,10 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         }
         else {
             this.userIcon.show();
+            if (!this.showSidebarNames)
+                this.userIcon._label.hide();
+            else
+                this.userIcon._label.show();
             this.avatarSeparator.show();
         }
     }
@@ -2187,6 +2201,7 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
                 this.favoriteAppsBox.add(button.actor, { y_align: St.Align.END, y_fill: false });
             }
         }
+        this.favoriteAppsBox.x_align = this.showSidebarNames ? Clutter.ActorAlign.START : Clutter.ActorAlign.CENTER
         this.favoriteAppsBox.queue_relayout();
 
         // Separator between favs and places
@@ -2471,10 +2486,13 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         }
 
         // Position the system box
-        if (this.systemPosition == "sidebar")
+        if (this.systemPosition == "sidebar") {
             global.reparentActor(this.systemBox, this.sidebar);
-        else
+            this.systemBox.vertical = this.verticalSystem;
+        } else {
             global.reparentActor(this.systemBox, this.searchBox);
+            this.systemBox.vertical = false;
+        }
     }
 
     _buildSidebar() {
@@ -2516,11 +2534,12 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
 
         this.placesBox = new St.BoxLayout({
             vertical: true,
+            x_align: this.showSidebarNames ? St.Align.START : St.Align.MIDDLE,
             y_align: Clutter.ActorAlign.START,
             style_class: 'appmenu-places-box'
         });
 
-        this.favoriteAppsBox = new FavoriteAppsBox().actor;
+        this.favoriteAppsBox = new FavoriteAppsBox(this.showSidebarNames).actor;
 
         this.main_container.add(this.sidebar, { span: 1 });
 
@@ -2625,6 +2644,7 @@ class CinnamonMenuApplet extends Applet.TextIconApplet {
         this.categoriesApplicationsBox.actor.add(this.applicationsScrollView, {span: -1, expand: true});
 
         this.systemBox = new St.BoxLayout({
+            vertical: this.systemPosition === "sidebar" && this.verticalSystem,
             style_class: 'appmenu-system-box',
             y_expand: false,
             x_expand: false,
