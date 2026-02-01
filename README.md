@@ -17,6 +17,11 @@ Additional functionality will likely be added in the future.
 
 *Config options*
 
+# Installation Instructions
+
+* Copy the applet directory to either `~/local/share/cinnamon/applets` (to install for a single user) or `/usr/share/cinnamon/applets` (to install for all users on the machine).
+* Open the Cinnamon 'Applets' menu and add it
+
 <img width="555" height="598" alt="CustomizableMenu_Classic" src="https://github.com/user-attachments/assets/8c8ae9e0-020a-467e-8e51-9daf66114cb8" />
 
 *Customized to resemble the classic menu appearance*
